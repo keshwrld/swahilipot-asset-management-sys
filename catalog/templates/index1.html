@@ -1,58 +1,112 @@
 {% extends "base_generic.html" %}
-
 {% load static %}
 {% block content %}
-{% load bootstrap4 %}
-<div class="container-fluid">
-<h1>Asset Management</h1>
 
-  <p>Welcome to <em>Asset Management</em>, a very basic Django website developed.</p>
+<!-- Hero Section -->
+<section class="hero bg-primary text-white text-center py-0">
+  <div class="container">
+    <h1 class="display-7">Welcome to Swahilipot Asset Management System</h1>
+    <p class="lead">Manage your assets efficiently and effectively</p>
+    <a href="{% url 'catalog:asset-list' %}" class="btn btn-light btn-lg mt-4">Get Started</a>
+  </div>
+</section>
 
-<h2>Dynamic content :)</h2>
+<!-- Features Section -->
+<section class="features py-5 text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="feature-box p-4 shadow-sm border rounded">
+          <i class="fas fa-laptop fa-3x mb-3 text-primary"></i>
+          <h3>Track Assets</h3>
+          <p>Keep track of all your assets in one place.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-box p-4 shadow-sm border rounded">
+          <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+          <h3>Manage Users</h3>
+          <p>Assign assets to users and manage assignments.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-box p-4 shadow-sm border rounded">
+          <i class="fas fa-chart-line fa-3x mb-3 text-primary"></i>
+          <h3>Generate Reports</h3>
+          <p>Generate detailed reports and analytics.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <p>The base has the following record counts:</p>
-  <ul>
-    <li><strong>Devices:</strong> {{ num_devices }}</li>
-    <li><strong>Laptops:</strong> {{ num_lt }}</li>
-    <li><strong>Desktop:</strong> {{ num_dt }}</li>
-	<li><strong>Monitor:</strong> {{ num_mt }}</li>
-    <li><strong>Deployed:</strong> {{ num_dl_dep }}</li>
-	  <li><strong>Stock:</strong> {{ num_dv_stk }}</li>
-	  <li><strong>New:</strong> {{ num_dv_new }}</li>
+<!-- Statistics Section -->
+<section class="statistics bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Current Asset Overview</h2>
+    <div class="row">
+        <!-- Total Assets card -->
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Total Assets</h5>
+                    <p class="card-text">{{ num_assets }}</p>
+                    <a href="{% url 'catalog:asset-list' %}" class="btn btn-secondary">View Assets</a>
+                </div>
+            </div>
+        </div>
+        <!-- Assigned Assets card -->
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Assigned Assets</h5>
+                    <p class="card-text">{{ num_assigned_assets }}</p>
+                    <a href="{% url 'catalog:assigned_asset_list' %}" class="btn btn-secondary">View Assigned Assets</a>
+                </div>
+            </div>
+        </div>
+        <!-- Damaged Assets card -->
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Damaged Assets</h5>
+                    <p class="card-text">{{ num_damaged_assets }}</p>
+                    <a href="{% url 'catalog:maintenance-list' %}" class="btn btn-secondary">View Maintenance List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</section>
 
-    <li><strong>Customers:</strong> {{ num_authors }}</li>
-  </ul>
-<p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
 <table class="table table-striped table-hover table-bordered">
-	<tbody>
-		<tr>
-			<td rowspan="2">Device</td>
-			<th> Total </th>
-			<td>Laptop</td>
-			<td>Desktop</td>
-			<td>Monitor</td>
-		</tr>
-		<tr>
-			<th> {{ num_devices }}</th>
-			<td>: {{ num_lt }}</td>
-			<td>: {{ num_dt }}</td>
-			<td>: {{ num_mt }}</td>
-		</tr>
-		<tr>
-			<td rowspan="2">Inventory</td>
-			<td>Deployed:</td>
-			<td>Stock:</td>
-			<td>New:</td>
-		</tr>
-		<tr>
-			<td>{{ num_dl_dep }}</td>
-			<td>{{ num_dv_stk }}</td>
-			<td>{{ num_dv_new }}</td>
-		</tr>
-	</tbody>
+  <thead>
+      <tr class="bg-primary text-white text-center">
+          <th rowspan="2">Category</th>
+          <th>Total Items</th>
+          <th>Assigned Items</th>
+          <th>Damaged Items</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr class="bg-light text-center">
+          <td>Total Assets</td>
+          <td>{{ num_assets }}</td>
+          <td>{{ num_assigned_assets }}</td>
+          <td>{{ num_damaged_assets }}</td>
+      </tr>
+  </tbody>
 </table>
-
+<div class="row mb-4">
+  <div class="col-md-4 text-center">
+      <a href="{% url 'catalog:download_csv' 'assets' %}" class="btn btn-primary btn-lg">Download Assets</a>
+  </div>
+  <div class="col-md-4 text-center">
+      <a href="{% url 'catalog:download_csv' 'assigned_assets' %}" class="btn btn-primary btn-lg">Download Assigned Assets</a>
+  </div>
+  <div class="col-md-4 text-center">
+      <a href="{% url 'catalog:download_csv' 'damaged_assets' %}" class="btn btn-primary btn-lg">Download Damaged Assets</a>
+  </div>
 </div>
-
 
 {% endblock %}
