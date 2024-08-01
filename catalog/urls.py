@@ -57,6 +57,7 @@ urlpatterns = [
     path('maintenance/', MaintenanceListView.as_view(), name='maintenance-list'),
     path('return-asset-success/', TemplateView.as_view(template_name='catalog/return_asset_success.html'), name='return_asset_success'),
     path('maintenance/fix/<int:pk>/', FixDamagedAssetView.as_view(), name='fix_damaged_asset'),
+    path('download/<str:table_name>/', views.download_csv, name='download_csv'),
 
 
 ]

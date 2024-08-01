@@ -30,6 +30,34 @@ from .forms import FixDamagedAssetForm
 from django.core.files.base import ContentFile
 from io import BytesIO
 import qrcode
+import csv
+from django.http import HttpResponse
+
+
+
+def download_csv(request, table_name):
+    if table_name == 'assets':
+        queryset = Asset.objects.all()
+        filename = 'assets.csv'
+        fields = ['id', 'name', 'category', 'location', 'condition', 'quantity']
+    elif table_name == 'assigned_assets':
+        queryset = AssignedAsset.objects.all()
+        filename = 'assigned_assets.csv'
+        fields = ['id', 'asset', 'quantity', 'organisation_name', 'phone_number', 'date_picked', 'date_to_return']
+    elif table_name == 'damaged_assets':
+        queryset = DamagedAsset.objects.all()
+        filename = 'damaged_assets.csv'
+        fields = ['id', 'asset', 'organisation_name', 'phone_number', 'condition', 'quantity_good', 'quantity_damaged']
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+    writer = csv.writer(response)
+    writer.writerow(fields)
+    for obj in queryset:
+        writer.writerow([getattr(obj, field) for field in fields])
+
+    return response
 
 
 
